@@ -1,0 +1,101 @@
+// What can be wrong with a package, in Russian (the English is the engine's
+// own words: shared/lib/mod/issues.ts). Names from the format (fields,
+// triggers, actions, keys) stay as they are: they are what a package holds.
+import type { Msg } from '@/shared/lib/mod';
+import { py_repr } from '@/shared/lib/mod';
+import { plurals } from '../plural';
+
+const p = plurals('ru');
+const list = (xs: string[]) => xs.join(', ');
+const chars = (n: number) => p(n, { one: '# символа', few: '# символов', many: '# символов', other: '# символа' });
+
+export function problem_ru(m: Msg): string {
+  switch (m.k) {
+    case 'object': return 'должно быть объектом';
+    case 'unknown_field': return `неизвестное поле ${py_repr(m.field)}`;
+    case 'string': return 'должно быть строкой';
+    case 'length': return `должно быть от ${m.lo} до ${chars(m.hi)}`;
+    case 'pattern': return `${py_repr(m.value)} не подходит под шаблон ${m.pattern}`;
+    case 'number': return 'должно быть числом';
+    case 'whole': return 'должно быть целым числом';
+    case 'between': return `должно быть от ${m.lo} до ${m.hi}`;
+    case 'boolean': return 'должно быть true или false';
+    case 'one_of': return `должно быть одним из: ${list(m.options)}`;
+    case 'list': return 'должно быть списком';
+    case 'at_most': return `не больше ${m.n} элементов`;
+    case 'expression_type': return 'должно быть выражением (строкой) или числом';
+    case 'x_char': return `неожиданный символ ${py_repr(m.ch)} на позиции ${m.at}`;
+    case 'x_expected': return `ожидалось ${py_repr(m.want)}, а здесь ${m.found ? py_repr(m.found) : 'конец'}`;
+    case 'x_field_name': return `после «.» ожидалось имя поля, а здесь ${m.found ? py_repr(m.found) : 'конец'}`;
+    case 'x_unexpected': return m.found ? `неожиданное ${py_repr(m.found)}` : 'выражение обрывается';
+    case 'x_chain': return 'сравнения не идут цепочкой: используйте and';
+    case 'x_deep': return 'выражение вложено слишком глубоко';
+    case 'x_long': return `выражение не длиннее ${m.max} символов`;
+    case 'x_empty': return 'пустое выражение';
+    case 'x_not_string': return 'выражение — это строка';
+    case 'x_unknown_name': return `неизвестное имя ${py_repr(m.name)}`;
+    case 'x_needs_field': return `у ${py_repr(m.root)} нужно поле (${list(m.fields)})`;
+    case 'x_no_field': return `у ${py_repr(m.root)} нет поля ${py_repr(m.field)}${m.fields.length ? ` (есть: ${list(m.fields)})` : ''}`;
+    case 'x_impure': return `${m.fn}() берёт случайное число: здесь нельзя (это меняло бы забег там, где игра только смотрит)`;
+    case 'x_unknown_function': return `неизвестная функция ${py_repr(m.fn)}`;
+    case 'x_arguments': return `${m.fn}() принимает ${m.lo === m.hi ? m.lo : `от ${m.lo} до ${m.hi}`} ${p(m.hi, { one: 'аргумент', few: 'аргумента', many: 'аргументов', other: 'аргумента' })}`;
+    case 'not_json': return 'это не простой JSON';
+    case 'too_big': return `пакет не больше ${m.max_kb} кБ (сейчас ${m.kb} кБ)`;
+    case 'format': return 'должно быть 1 (версия формата)';
+    case 'builtin_id': return 'это id встроенного режима игры';
+    case 'too_many_assets': return `не больше ${m.n} изображений`;
+    case 'asset_name': return 'имя изображения: строчные латинские буквы, цифры, _ . -';
+    case 'asset_data_url': return 'должно быть PNG в виде data URL (data:image/png;base64,...)';
+    case 'asset_base64': return 'это не base64';
+    case 'asset_size': return `изображение не больше ${m.kb} кБ`;
+    case 'asset_png': return 'это не PNG';
+    case 'asset_dims': return `${m.w}x${m.h}: изображения от 8 до 1024 пикселей в ширину и высоту`;
+    case 'key_twice': return `${py_repr(m.key)} встречается дважды`;
+    case 'language_code': return 'это не код языка (en-us, fr, pt_BR …)';
+    case 'no_asset': return `в изображениях пакета нет ${py_repr(m.name)}`;
+    case 'too_many_values': return `не больше ${m.n} значений`;
+    case 'value_name': return 'имя значения: строчные латинские буквы, цифры и _';
+    case 'value_type': return 'должно быть числом, строкой или true/false';
+    case 'value_long': return 'не длиннее 60 символов';
+    case 'unknown_modifier': return `неизвестное изменение забега (есть: ${list(m.options)})`;
+    case 'start_only': return 'это меняют только правила мода или начало колоды';
+    case 'not_passive': return 'постоянные изменения джокера не могут это менять (используйте эффект)';
+    case 'one_field_action': return 'действие — объект с одним полем: что оно делает ({"mult": 4})';
+    case 'unknown_action': return `неизвестное действие (есть: ${list(m.options)})`;
+    case 'only_scores_in': return `приносит очки только в ${list(m.triggers)}`;
+    case 'only_retrigger': return 'только в retrigger_scored и retrigger_held';
+    case 'only_joker_values': return 'значения хранит только джокер';
+    case 'not_config_value': return 'это не одно из значений джокера (config)';
+    case 'level_up_played': return 'повышает сыгранную комбинацию: здесь назовите комбинацию ({"hand": "\'Flush\'"})';
+    case 'hand_needed': return 'здесь нужно (сыгранной руки нет)';
+    case 'only_jokers': return 'только для джокеров';
+    case 'only_joker_destroys': return 'уничтожить себя может только джокер';
+    case 'only_discard': return 'только в discard (card_destroy уничтожает карту, выбранную условием)';
+    case 'no_card_here': return 'здесь нет карты: используйте scoring, played, held или selected';
+    case 'no_played_hand': return 'здесь нет сыгранной руки';
+    case 'only_consumable_selected': return 'выбранные карты есть только у расходника';
+    case 'destroy_selected_only': return 'только выбранные карты расходника (в других местах — card_destroy и destroy_card)';
+    case 'changes_nothing': return 'ничего не меняет (enhancement, seal, edition, suit, rank, chips или destroy)';
+    case 'do_missing': return 'нет действий (do)';
+    case 'else_needs_if': return 'нужно условие (if)';
+    case 'planet_hand_only': return 'комбинацию сама повышает только Планета (используйте level_up)';
+    case 'planet_needs_hand': return 'Планете нужна комбинация (или своё использование)';
+    case 'min_over_max': return 'min больше max';
+    case 'planet_no_use': return 'Планета с комбинацией повышает её: своего использования не нужно';
+    case 'no_use': return 'ничего не делает: добавьте использование (действия)';
+    case 'targets_needed': return 'нужно: использование меняет выбранные карты';
+    case 'no_redeem': return 'ничего не делает: добавьте, что происходит при активации';
+    case 'blind_one_field': return 'действие — объект с одним полем';
+    case 'blind_action': return `${m.when} блайнда умеет: ${list(m.options)}`;
+    case 'no_such_key': return `нет ${py_repr(m.key)} (ни в игре, ни в модах забега)`;
+    case 'hint_no_art': return 'нет рисунка: игра рисует обычный';
+    case 'hint_missing_var': return `в тексте #${m.n}#, но такого значения нет (vars)`;
+    case 'hint_unused_var': return `значение #${m.n}# не показано в тексте`;
+    case 'hint_does_nothing': return 'пока ничего не делает: добавьте эффект';
+    case 'hint_deck_image': return 'рубашку колоды игра рисует только из своих рисунков (лист centers)';
+    case 'hint_ante_range': return 'min_ante больше max_ante: босс не появится';
+    case 'hint_never_made': return 'не продаётся в магазине, и ничто его не создаёт (это может колода, действие create или творческий режим)';
+    case 'hint_unused_asset': return 'это изображение не использует ни один предмет';
+    case 'hint_no_description': return 'нет описания (игра покажет пустую рамку)';
+  }
+}

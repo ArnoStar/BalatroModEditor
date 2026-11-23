@@ -1,0 +1,43 @@
+/* The drawing studio. */
+.studio { display: grid; grid-template-columns: 50px minmax(0, 1fr) 300px; gap: 12px; min-height: 560px; outline: none; }
+.studio--loading { display: grid; place-items: center; }
+.studio__tools { display: flex; flex-direction: column; gap: 3px; padding: 6px; border-radius: var(--radius); background: var(--panel-2); border: 1px solid var(--line); align-self: start; position: sticky; top: 8px; }
+.studio__sep { height: 1px; background: var(--line-2); margin: 4px 2px; }
+.studio__stage { display: grid; grid-template-rows: auto 1fr; gap: 8px; min-width: 0; }
+.studio__opts { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 6px 10px; border-radius: var(--radius); background: var(--panel-2); border: 1px solid var(--line); font-size: 12.5px; color: var(--text-2); }
+.studio__grow { flex: 1; }
+.studio__zoom { font-variant-numeric: tabular-nums; min-width: 46px; text-align: center; }
+.studio__pos { font-family: var(--font-mono); font-size: 12px; color: var(--muted); min-width: 64px; text-align: right; }
+.studio__range { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-2); }
+.studio__range input { accent-color: var(--accent); }
+.studio__scroll { overflow: auto; border-radius: var(--radius-lg); border: 1px solid var(--line); background:
+  repeating-conic-gradient(#1b1826 0% 25%, #15131f 0% 50%) 50% / 20px 20px; display: grid; place-items: center; padding: 24px; min-height: 480px; max-height: 76vh; }
+.studio__paper { position: relative; flex: none; box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.studio__trace { position: absolute; inset: 0; pointer-events: none; line-height: 0; }
+.studio__canvas { position: absolute; inset: 0; image-rendering: pixelated; cursor: crosshair; touch-action: none; }
+.studio__overlay { position: absolute; inset: 0; pointer-events: none; }
+.studio__side { display: grid; gap: 10px; align-content: start; }
+.studio__panel { display: grid; gap: 8px; padding: 12px; border-radius: var(--radius); background: var(--panel-2); border: 1px solid var(--line); position: relative; }
+.studio__panel h3 { font-size: 11px; font-weight: 750; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.studio__label { font-size: 11.5px; color: var(--muted); }
+.studio__colour { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.studio__colour input[type='color'] { width: 42px; height: 32px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--field); padding: 2px; cursor: pointer; }
+.studio__now { position: absolute; top: 10px; right: 12px; width: 26px; height: 26px; border-radius: 7px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25) inset, 0 4px 10px rgba(0, 0, 0, 0.5); background-image: none; }
+.swatches { display: grid; grid-template-columns: repeat(11, 1fr); gap: 3px; }
+.swatches button { aspect-ratio: 1; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.12); cursor: pointer; padding: 0; }
+.swatches button:hover { transform: scale(1.15); }
+.swatches button.is-on { outline: 2px solid #fff; outline-offset: 1px; }
+.layers { display: grid; gap: 3px; }
+.layers li { display: grid; grid-template-columns: 1fr auto 64px; gap: 4px; align-items: center; padding: 2px 4px; border-radius: 7px; }
+.layers li.is-on { background: var(--accent-soft); }
+.layers__pick { border: 0; background: none; color: var(--text); text-align: left; padding: 4px; cursor: pointer; font-size: 13px; }
+.layers input[type='range'] { width: 64px; accent-color: var(--accent); }
+.studio__row { display: flex; gap: 4px; align-items: center; }
+.studio__row--wrap { flex-wrap: wrap; }
+.studio__result { display: flex; align-items: center; gap: 12px; }
+.studio__result img { image-rendering: pixelated; border-radius: 6px; background: repeating-conic-gradient(#2a2638 0% 25%, #1e1b29 0% 50%) 50% / 10px 10px; }
+.studio__state { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--ok); }
+.studio__state.is-dirty { color: var(--warn); }
+.page--studio { max-width: none; }
+.modal .studio { min-height: 520px; }
+@media (max-width: 1100px) { .studio { grid-template-columns: 50px minmax(0, 1fr); } .studio__side { grid-column: 1 / -1; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); } }

@@ -1,0 +1,10 @@
+/* The editor's styles, in order: tokens first, motion last. */
+@import './tokens.css';
+@import './base.css';
+@import './controls.css';
+@import './shell.css';
+@import './editor.css';
+@import './game.css';
+@import './art.css';
+@import './lab.css';
+@import './motion.css';
