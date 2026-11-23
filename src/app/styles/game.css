@@ -1,0 +1,69 @@
+/* The game's own look: its sprite sheets (pixel-sharp), its font, its colours,
+ * a card's popup (the light rim, the dark box, the name, the white description
+ * and the badge), a blind's chip turning, and cards tilting under the pointer. */
+:root {
+  --game-edition: #e8e8ff;
+  --game-dark-edition: #5c4c8c;
+}
+
+.sprite { display: inline-block; flex: none; background-repeat: no-repeat; image-rendering: pixelated; vertical-align: middle; }
+.sprite--missing { background: repeating-linear-gradient(45deg, #2a2438 0 6px, #221d2f 6px 12px); border-radius: 6px; }
+.sprite--anim { animation: blind-turn 2.4s steps(21) infinite; background-position-y: var(--row-y) !important; }
+@keyframes blind-turn { from { background-position-x: 0; } to { background-position-x: var(--frames-w); } }
+
+.card-art { position: relative; display: inline-block; flex: none; line-height: 0; border-radius: 6%; }
+.card-art img { width: 100%; height: 100%; image-rendering: pixelated; object-fit: contain; }
+.card-art__blank { display: block; width: 100%; height: 100%; border-radius: 8%; background: linear-gradient(160deg, #3a3550, #262136); border: 1px dashed var(--line-3); }
+.card-art.is-default { opacity: 0.72; filter: saturate(0.6); }
+.card-art__edition { position: absolute; inset: 3%; border-radius: 7%; pointer-events: none; mix-blend-mode: screen; }
+.card-art--foil .card-art__edition { background: linear-gradient(115deg, transparent 20%, rgba(120, 200, 255, 0.45) 45%, transparent 70%); background-size: 220% 100%; animation: sheen 3s linear infinite; }
+.card-art--holo .card-art__edition { background: repeating-linear-gradient(120deg, rgba(255, 80, 120, 0.25) 0 8%, rgba(80, 200, 255, 0.25) 8% 16%, rgba(255, 240, 120, 0.2) 16% 24%); background-size: 200% 200%; animation: sheen 4s linear infinite; }
+.card-art--polychrome .card-art__edition { background: conic-gradient(from 0deg, rgba(255, 90, 90, 0.35), rgba(255, 220, 90, 0.35), rgba(90, 255, 150, 0.35), rgba(90, 160, 255, 0.35), rgba(220, 90, 255, 0.35), rgba(255, 90, 90, 0.35)); animation: hue 5s linear infinite; }
+.card-art--negative { filter: invert(1) hue-rotate(180deg); }
+
+.blind-chip { display: inline-grid; place-items: center; position: relative; flex: none; }
+.blind-chip::before { content: ''; position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--chip, #b44430) 70%, transparent), transparent 70%); filter: blur(6px); opacity: 0.8; }
+.blind-chip .sprite { position: relative; }
+
+/* ---- text in the game's markup */
+.game-text { display: grid; justify-items: center; gap: 0.08em; font-family: var(--font-game); font-size: calc(15px * var(--text-scale, 1)); line-height: 1.12; text-align: center; color: #4f6367; }
+.has-font .game-text, .game-text { -webkit-font-smoothing: none; font-smooth: never; }
+.game-text__line { display: block; white-space: pre-wrap; }
+.game-text__part { display: inline; }
+.game-text__box { display: inline-block; padding: 0.04em 0.28em; margin: 0 0.12em; border-radius: 0.28em; line-height: 1.05; }
+.game-text__part.has-tip { text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }
+.game-text__part.is-float { display: inline-block; animation: float-text 2.4s ease-in-out infinite; }
+.game-text__part.is-bump { display: inline-block; animation: bump-text 1.2s ease-in-out infinite; }
+
+/* ---- a card and its popup, as the game shows them */
+.preview { --card-scale: 2; display: grid; justify-items: center; gap: 14px; font-family: var(--font-game); }
+.preview__none { font-family: var(--font-game); color: #8a9a9c; font-size: 14px; }
+.tilt { perspective: 700px; display: grid; place-items: center; position: relative; }
+.tilt > .card-art { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 0.25s var(--ease-out); filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.55)); }
+.tilt > .card-art::after { content: ''; position: absolute; inset: 0; border-radius: 6%; background: linear-gradient(105deg, transparent calc(var(--gx, 50%) - 30%), rgba(255, 255, 255, 0.16) var(--gx, 50%), transparent calc(var(--gx, 50%) + 30%)); pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+.tilt:hover > .card-art::after { opacity: 1; }
+.tilt--deck .deck-stack { position: absolute; inset: 0; display: grid; place-items: center; }
+.tilt--deck .deck-stack .card-art { position: absolute; filter: brightness(0.6); }
+.tilt--deck .deck-stack .card-art:nth-child(1) { transform: translate(8px, 8px); }
+.tilt--deck .deck-stack .card-art:nth-child(2) { transform: translate(4px, 4px); filter: brightness(0.8); }
+.popup { min-width: 186px; max-width: 290px; padding: 4px; border-radius: 12px; background: #dfe3ea; box-shadow: 0 5px 0 #9aa3b1, 0 18px 30px -10px rgba(0, 0, 0, 0.7); animation: pop-in 0.2s var(--ease-out); }
+.popup__inner { display: grid; gap: 6px; justify-items: center; padding: 7px 8px 8px; border-radius: 9px; background: #48535a; }
+.popup__name { font-family: var(--font-game); font-size: 23px; line-height: 1.05; color: #fff; text-align: center; text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35); letter-spacing: 0.02em; }
+.popup__desc { display: grid; place-items: center; min-width: 160px; min-height: 52px; padding: 7px 10px; border-radius: 8px; background: #fff; box-shadow: 0 3px 0 #b3bec2; }
+.popup__badge { padding: 2px 16px 3px; border-radius: 8px; font-family: var(--font-game); font-size: 16px; color: #fff; box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3); text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25); }
+.popup__badge--deck { background: #4f6367; }
+
+.preview--blind { width: 100%; }
+.preview-blind { display: grid; justify-items: center; gap: 8px; width: 100%; padding: 12px 12px 14px; border-radius: 14px; background: linear-gradient(180deg, color-mix(in srgb, var(--blind) 55%, #1d2426), #1d2426 80%); border: 3px solid color-mix(in srgb, var(--blind) 70%, #fff 10%); box-shadow: 0 5px 0 rgba(0, 0, 0, 0.35); }
+.preview-blind__label { font-family: var(--font-game); font-size: 17px; color: #fff; padding: 1px 12px; border-radius: 8px; background: color-mix(in srgb, var(--blind) 80%, black); }
+.preview-blind__chip { margin: 4px 0; }
+.preview-blind__name { font-family: var(--font-game); font-size: 26px; color: #fff; text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4); }
+.preview-blind__text { padding: 6px 10px; border-radius: 8px; background: rgba(0, 0, 0, 0.28); }
+.preview-blind__text .game-text { color: #fff; }
+.preview-blind__facts { display: grid; justify-items: center; gap: 2px; font-family: var(--font-game); font-size: 16px; color: #dfe7e8; }
+.preview-blind__reward b { color: var(--money); letter-spacing: 0.05em; }
+
+/* ---- playing cards (the lab) */
+.pcard { position: relative; display: inline-block; flex: none; }
+.pcard .card-art { position: absolute; inset: 0; }
+.pcard__layer { position: absolute; inset: 0; line-height: 0; }

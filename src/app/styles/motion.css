@@ -1,0 +1,19 @@
+/* Motion, last: every animation of the editor, and their stillness for those
+ * who ask the system for less motion. */
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pop-in { from { opacity: 0; transform: translateY(4px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes slide-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes drawer-in { from { transform: translateX(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+@keyframes float-text { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@keyframes bump-text { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+@keyframes sheen { from { background-position: 0% 0; } to { background-position: 220% 0; } }
+@keyframes hue { to { filter: hue-rotate(360deg); } }
+@keyframes flash { 0% { box-shadow: 0 0 0 0 rgba(143, 116, 255, 0.9); background: rgba(143, 116, 255, 0.14); } 100% { box-shadow: 0 0 0 10px rgba(143, 116, 255, 0); background: transparent; } }
+@keyframes edition { 0% { --game-edition: #ffd8e8; } 50% { --game-edition: #d8f4ff; } 100% { --game-edition: #ffd8e8; } }
+.is-flash { animation: flash 1.2s var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  .sprite--anim { animation: none; }
+}

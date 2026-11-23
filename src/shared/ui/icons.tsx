@@ -1,0 +1,88 @@
+// The editor's icons: one stroke style, 24-unit grid, drawn here (no icon font,
+// no request).
+import type { SVGProps } from 'react';
+
+const PATHS = {
+  plus: 'M12 5v14M5 12h14',
+  minus: 'M5 12h14',
+  x: 'M6 6l12 12M18 6L6 18',
+  check: 'M5 12.5l4.5 4.5L19 7.5',
+  trash: 'M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12M9 7V4h6v3',
+  copy: 'M9 9h10v11H9zM5 15V4h10',
+  undo: 'M9 14L4 9l5-5M4 9h11a5 5 0 010 10h-3',
+  redo: 'M15 14l5-5-5-5M20 9H9a5 5 0 000 10h3',
+  alert: 'M12 8v5M12 16.5v.5M10.3 3.9L2.4 18a2 2 0 001.7 3h15.8a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z',
+  info: 'M12 11v6M12 7.5v.5M12 21a9 9 0 100-18 9 9 0 000 18z',
+  'chevron-left': 'M15 18l-6-6 6-6',
+  'chevron-right': 'M9 18l6-6-6-6',
+  'chevron-down': 'M6 9l6 6 6-6',
+  'chevron-up': 'M18 15l-6-6-6 6',
+  'arrow-up': 'M12 19V5M6 11l6-6 6 6',
+  'arrow-down': 'M12 5v14M18 13l-6 6-6-6',
+  grip: 'M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01',
+  eye: 'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12zM12 15a3 3 0 100-6 3 3 0 000 6z',
+  'eye-off': 'M3 3l18 18M10.6 5.1A9.8 9.8 0 0112 5c6.5 0 10 7 10 7a17 17 0 01-3.2 4.2M6.6 6.6C3.8 8.3 2 12 2 12s3.5 7 10 7a9.6 9.6 0 004.4-1M9.9 9.9a3 3 0 004.2 4.2',
+  image: 'M4 5h16v14H4zM4 16l5-5 4 4 2-2 5 5M15.5 9.5h.01',
+  pencil: 'M4 20l4-1 11-11a2.1 2.1 0 00-3-3L5 16l-1 4zM14 6l3 3',
+  eraser: 'M8 20h12M5.6 14.6l7.8-7.8a2 2 0 012.8 0l2.8 2.8a2 2 0 010 2.8L12 19.4a2 2 0 01-1.4.6H8.8a2 2 0 01-1.4-.6l-1.8-1.8a2 2 0 010-3zM9 11l5 5',
+  bucket: 'M5 11l7-7 7 7-7 7zM5 11h14M20 15s2 2.5 2 4a2 2 0 01-4 0c0-1.5 2-4 2-4z',
+  line: 'M5 19L19 5',
+  square: 'M5 5h14v14H5z',
+  circle: 'M12 20a8 8 0 100-16 8 8 0 000 16z',
+  pipette: 'M14.5 4.5l5 5M17 2l5 5-3 3-5-5zM14 8l-9 9v3h3l9-9',
+  move: 'M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3',
+  'flip-h': 'M12 3v18M8 7l-5 5 5 5V7zM16 7l5 5-5 5V7z',
+  'flip-v': 'M3 12h18M7 8l5-5 5 5H7zM7 16l5 5 5-5H7z',
+  grid: 'M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16',
+  layers: 'M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5',
+  download: 'M12 4v11M7 10l5 5 5-5M5 20h14',
+  upload: 'M12 20V9M7 14l5-5 5 5M5 4h14',
+  play: 'M7 4.5v15l12-7.5z',
+  flask: 'M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 006 21h12a1.7 1.7 0 001.5-2.5L14 9V3M7.5 14h9',
+  rocket: 'M5 15c-1.5 1-2 4-2 4s3-.5 4-2M9 13l-3-1 2.5-4.5L13 6c2.5-2.5 5.5-3 8-3 0 2.5-.5 5.5-3 8l-1.5 4.5L12 18l-1-3M15 10a1.5 1.5 0 100-3 1.5 1.5 0 000 3z',
+  globe: 'M12 21a9 9 0 100-18 9 9 0 000 18zM3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z',
+  user: 'M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0',
+  search: 'M11 18a7 7 0 100-14 7 7 0 000 14zM20 20l-4-4',
+  book: 'M4 19.5A2.5 2.5 0 016.5 17H20V3H6.5A2.5 2.5 0 004 5.5v14zM4 19.5A2.5 2.5 0 006.5 22H20v-5',
+  folder: 'M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z',
+  file: 'M14 3H6v18h12V7zM14 3v4h4',
+  code: 'M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14',
+  sparkle: 'M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z',
+  card: 'M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z',
+  joker: 'M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2zM9 9h.01M15 9h.01M9 14c1.5 2 4.5 2 6 0',
+  tarot: 'M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2zM12 7l1.5 3.5L17 12l-3.5 1.5L12 17l-1.5-3.5L7 12l3.5-1.5z',
+  voucher: 'M3 7a2 2 0 012-2h14a2 2 0 012 2v2a3 3 0 000 6v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a3 3 0 000-6zM14 5v14',
+  deck: 'M9 2h10a2 2 0 012 2v12M6 5h10a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2z',
+  blind: 'M12 21a9 9 0 100-18 9 9 0 000 18zM12 16a4 4 0 100-8 4 4 0 000 8zM12 3v3M12 18v3M3 12h3M18 12h3',
+  palette: 'M12 21a9 9 0 119-9c0 2-1.5 3-3.5 3H15a2 2 0 00-1.5 3.3A1.7 1.7 0 0112 21zM7.5 11.5h.01M10 7.5h.01M15 7.5h.01',
+  translate: 'M4 5h8M8 3v2M5.5 5c.5 3 2.5 5.5 5.5 7M10.5 5c-.7 3.5-3 6.5-6.5 8M13 21l4-10 4 10M14.5 17.5h5',
+  package: 'M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8',
+  external: 'M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5',
+  more: 'M5 12h.01M12 12h.01M19 12h.01',
+  home: 'M4 11l8-7 8 7v9a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1z',
+  refresh: 'M20 11a8 8 0 00-14.9-3M4 5v3h3M4 13a8 8 0 0014.9 3M20 19v-3h-3',
+  'zoom-in': 'M11 18a7 7 0 100-14 7 7 0 000 14zM20 20l-4-4M11 8v6M8 11h6',
+  'zoom-out': 'M11 18a7 7 0 100-14 7 7 0 000 14zM20 20l-4-4M8 11h6',
+  mirror: 'M12 3v18M9 7L4 17h5zM15 7l5 10h-5z',
+  rules: 'M4 6h16M4 12h10M4 18h7M18 15l2 2 3-3',
+  wand: 'M15 4V2M15 10V8M12 5h-2M20 5h-2M17.5 2.5L16 4M17.5 7.5L16 6M3 21l12-12',
+  lock: 'M6 11h12v10H6zM8 11V7a4 4 0 018 0v4',
+  dot: 'M12 12.01h.01',
+  shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
+  menu: 'M4 6h16M4 12h16M4 18h16',
+  login: 'M15 4h4a1 1 0 011 1v14a1 1 0 01-1 1h-4M10 17l5-5-5-5M15 12H3',
+  coins: 'M9 14a6 6 0 100-12 6 6 0 000 12zM15.5 9.5a6 6 0 11-6 6',
+  hand: 'M8 13V5.5a1.5 1.5 0 013 0V12M11 11.5V4a1.5 1.5 0 013 0v7.5M14 11.5V5.5a1.5 1.5 0 013 0V14c0 4-2.5 7-6.5 7S5 18.5 4 16l-1-3a1.5 1.5 0 012.6-1.4L8 14',
+  target: 'M12 21a9 9 0 100-18 9 9 0 000 18zM12 17a5 5 0 100-10 5 5 0 000 10zM12 13a1 1 0 100-2 1 1 0 000 2z',
+} as const;
+
+export type IconName = keyof typeof PATHS;
+
+export function Icon({ name, size = 18, ...rest }: { name: IconName; size?: number } & SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}
+      strokeLinecap="round" strokeLinejoin="round" aria-hidden focusable="false" {...rest}>
+      <path d={PATHS[name]} />
+    </svg>
+  );
+}
